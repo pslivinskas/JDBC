@@ -1,4 +1,8 @@
+import JDBC.Customer;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,10 +14,23 @@ public class Main {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");
 
+            List<Customer> customers = new ArrayList<>();
+
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt(1) + " | " + resultSet.getString("customerName"));
+
+                Customer customer = new Customer(
+                        resultSet.getInt("customerNumber"),
+                        resultSet.getString("customerName"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("city")
+                );
+                customers.add(customer);
+
 
             }
+
+            customers.forEach(System.out::println);
+
             connection.close();
 
         } catch (Exception e) {
